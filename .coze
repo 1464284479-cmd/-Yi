@@ -1,0 +1,10 @@
+[project]
+requires = ["python-311"]
+
+[dev]
+build = ["pip", "install", "-r", "requirements.txt"]
+run = ["python", "run.py"]
+
+[deploy]
+build = ["pip", "install", "-r", "requirements.txt"]
+run = ["python", "run.py"]

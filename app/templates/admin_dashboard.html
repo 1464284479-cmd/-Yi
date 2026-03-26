@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}管理员中心 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container wide">
+    <div class="logo-emoji">🛡️</div>
+    <h1>管理员中心</h1>
+    <p class="subtitle">系统管理 · 专业操作</p>
+    
+    <div class="user-info" style="background: linear-gradient(135deg, #e7f3ff 0%, #d1ecf1 100%); border-color: #bee5eb;">
+        <p><strong>👨‍💼 管理员：</strong>{{ admin.username }}</p>
+        <p><strong>📅 注册时间：</strong>{{ admin.created_at.strftime('%Y年%m月%d日 %H:%M') }}</p>
+        <p><strong>👥 用户总数：</strong>{{ users|length }} 人</p>
+    </div>
+    
+    <div style="margin-top: 25px;">
+        <h2 style="font-size: 18px; margin-bottom: 18px;">
+            <span>📊</span> 用户管理
+        </h2>
+        
+        {% if users %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>👤 用户名</th>
+                        <th>📱 手机号</th>
+                        <th>📧 邮箱</th>
+                        <th>📅 注册时间</th>
+                        <th>📊 状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.phone or '-' }}</td>
+                        <td>{{ user.email or '-' }}</td>
+                        <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            {% if user.is_locked() %}
+                                <span style="color: #dc3545; font-weight: 600;">🔒 已锁定</span>
+                            {% else %}
+                                <span style="color: #28a745; font-weight: 600;">✅ 正常</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 12px; border: 2px dashed #e0e0e0;">
+                <p style="color: #999; font-size: 16px;">
+                    📭 暂无用户数据
+                </p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div style="margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; border: 2px solid #e8e8e8;">
+        <h3 style="font-size: 17px; margin-bottom: 15px; color: #667eea;">
+            <span>🛠️</span> 管理员功能说明
+        </h3>
+        <ul class="feature-list">
+            <li>👥 查看所有注册用户信息</li>
+            <li>🔒 用户状态管理（锁定/解锁）</li>
+            <li>⚙️ 系统配置管理</li>
+            <li>👨‍💼 管理员账号管理（需在数据库中操作）</li>
+            <li>📈 数据统计分析</li>
+        </ul>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+            <button class="btn-secondary">
+                <span>👋 退出登录</span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

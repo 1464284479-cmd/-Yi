@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}管理员登录 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="logo-emoji">🛡️</div>
+    <h1>管理员登录</h1>
+    <p class="subtitle">管理后台 · 专业操作</p>
+    
+    <form method="POST" action="{{ url_for('auth.admin_login') }}">
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="text" id="username" name="username" 
+                       value="{{ username|default('') }}" 
+                       placeholder="管理员账号" required>
+                <span class="input-icon">👨‍💼</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" 
+                       placeholder="密码" required>
+                <span class="input-icon">🔑</span>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-secondary">
+            <span>⚡ 登录后台</span>
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 25px;">
+        <a href="{{ url_for('auth.login') }}" class="btn-link">
+            ← 返回登录
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}用户中心 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container wide">
+    <div class="logo-emoji">👤</div>
+    <h1>用户中心</h1>
+    <p class="subtitle">你好，{{ user.username }}！👋</p>
+    
+    <div class="user-info" style="background: linear-gradient(135deg, #e7f3ff 0%, #d1ecf1 100%); border-color: #bee5eb;">
+        <p><strong>👤 用户名：</strong>{{ user.username }}</p>
+        <p><strong>📱 手机号：</strong>{{ user.phone or '未设置' }}</p>
+        <p><strong>📧 邮箱：</strong>{{ user.email or '未设置' }}</p>
+        <p><strong>📅 注册时间：</strong>{{ user.created_at.strftime('%Y年%m月%d日 %H:%M') }}</p>
+    </div>
+    
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 30px; border-radius: 20px; border: 2px solid #e8e8e8;">
+        <h2 style="font-size: 18px; margin-bottom: 20px;">
+            <span>🎉</span> 欢迎使用垃圾图片分类系统
+        </h2>
+        <p style="color: #666; line-height: 1.9; margin-bottom: 25px;">
+            您已成功登录系统。这里是您的个人中心，可以查看和管理您的信息。
+        </p>
+        
+        <div style="background: white; padding: 25px; border-radius: 16px; border: 2px solid #e8e8e8;">
+            <h3 style="font-size: 17px; margin-bottom: 15px; color: #667eea;">
+                <span>🚀</span> 即将推出的功能
+            </h3>
+            <ul class="feature-list">
+                <li>📸 上传图片进行智能垃圾分类识别</li>
+                <li>📊 查看您的识别历史记录</li>
+                <li>📚 学习垃圾分类知识</li>
+                <li>⚙️ 修改个人设置和偏好</li>
+                <li>🎯 获取个性化分类建议</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <form action="{{ url_for('auth.logout') }}" method="POST">
+            <button class="btn-secondary">
+                <span>👋 退出登录</span>
+            </button>
+        </form>
+    </div>
+    
+    <div style="text-align: center; margin-top: 25px;">
+        <p style="color: #999; font-size: 14px;">
+            🌍 让我们一起保护环境，从垃圾分类开始
+        </p>
+    </div>
+</div>
+{% endblock %}

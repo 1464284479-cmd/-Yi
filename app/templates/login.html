@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}用户登录 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="logo-emoji">🗑️</div>
+    <h1>垃圾图片分类系统</h1>
+    <p class="subtitle">智能识别 · 环保生活</p>
+    
+    <form method="POST" action="{{ url_for('auth.login') }}">
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="text" id="username" name="username" 
+                       value="{{ username|default('') }}" 
+                       placeholder="用户名" required>
+                <span class="input-icon">👤</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" 
+                       placeholder="密码" required>
+                <span class="input-icon">🔑</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-wrapper">
+                <input type="text" id="captcha" name="captcha" 
+                       placeholder="验证码" required>
+                <span class="input-icon">🔢</span>
+            </div>
+            <div class="captcha" id="captcha-display" onclick="generateCaptcha()">
+                ----
+            </div>
+        </div>
+        
+        <button type="submit">
+            <span>🚀 登录</span>
+        </button>
+    </form>
+    
+    <div class="action-buttons">
+        <a href="{{ url_for('auth.forgot_password') }}" class="action-btn">
+            <span>🔑 忘记密码</span>
+        </a>
+        <a href="{{ url_for('auth.register') }}" class="action-btn">
+            <span>✨ 注册账号</span>
+        </a>
+        <a href="{{ url_for('auth.admin_login') }}" class="action-btn secondary">
+            <span>🛡️ 管理员</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 400px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .captcha {
+        margin-top: 12px;
+        cursor: pointer;
+    }
+    
+    .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 25px;
+    }
+    
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 8px;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: 2px solid #e8e8e8;
+        text-align: center;
+        line-height: 1.4;
+    }
+    
+    .action-btn:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .action-btn.secondary {
+        color: #6c757d;
+    }
+    
+    .action-btn.secondary:hover {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        border-color: #6c757d;
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+    
+    @media (max-width: 480px) {
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+        
+        .container {
+            padding: 40px 30px;
+        }
+    }
+</style>
+{% endblock %}

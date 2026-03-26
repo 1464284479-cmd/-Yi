@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}用户注册 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container wide">
+    <div class="logo-emoji">✨</div>
+    <h1>用户注册</h1>
+    <p class="subtitle">创建账号，开启垃圾分类之旅 🚀</p>
+    
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        <div class="form-group">
+            <label>用户名</label>
+            <div class="input-wrapper">
+                <input type="text" id="username" name="username" 
+                       value="{{ username|default('') }}" 
+                       placeholder="请输入用户名（3-20个字符）" required>
+                <span class="input-icon">👤</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>联系方式</label>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('phone')">
+                    <span>📱 手机号</span>
+                </div>
+                <div class="tab" onclick="switchTab('email')">
+                    <span>📧 邮箱</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group" id="phone-group">
+            <label>手机号</label>
+            <div class="input-wrapper">
+                <input type="tel" id="phone" name="phone" 
+                       value="{{ phone|default('') }}" 
+                       placeholder="请输入手机号">
+                <span class="input-icon">📱</span>
+            </div>
+            <div style="margin-top: 12px;">
+                <button type="button" class="btn-small" onclick="sendCode('phone')">
+                    <span>📲 发送验证码</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="form-group" id="email-group" style="display: none;">
+            <label>邮箱</label>
+            <div class="input-wrapper">
+                <input type="email" id="email" name="email" 
+                       value="{{ email|default('') }}" 
+                       placeholder="请输入邮箱">
+                <span class="input-icon">📧</span>
+            </div>
+            <div style="margin-top: 12px;">
+                <button type="button" class="btn-small" onclick="sendCode('email')">
+                    <span>📧 发送验证码</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>验证码</label>
+            <div class="input-wrapper">
+                <input type="text" id="verification_code" name="verification_code" 
+                       placeholder="请输入验证码" required>
+                <span class="input-icon">🔢</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>密码</label>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" 
+                       placeholder="至少8位，包含字母和数字" required>
+                <span class="input-icon">🔒</span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>确认密码</label>
+            <div class="input-wrapper">
+                <input type="password" id="confirm_password" name="confirm_password" 
+                       placeholder="请再次输入密码" required>
+                <span class="input-icon">🔐</span>
+            </div>
+        </div>
+        
+        <button type="submit">
+            <span>🎉 立即注册</span>
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 25px;">
+        <a href="{{ url_for('auth.login') }}" class="btn-link">
+            ← 返回登录
+        </a>
+    </div>
+</div>
+
+<script>
+let currentContactType = 'phone';
+
+function switchTab(type) {
+    currentContactType = type;
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    if (type === 'phone') {
+        tabs[0].classList.add('active');
+        document.getElementById('phone-group').style.display = 'block';
+        document.getElementById('email-group').style.display = 'none';
+        document.getElementById('phone').required = true;
+        document.getElementById('email').required = false;
+    } else {
+        tabs[1].classList.add('active');
+        document.getElementById('phone-group').style.display = 'none';
+        document.getElementById('email-group').style.display = 'block';
+        document.getElementById('phone').required = false;
+        document.getElementById('email').required = true;
+    }
+}
+
+async function sendCode(type) {
+    const contact = document.getElementById(type).value;
+    
+    if (!contact) {
+        alert('⚠️ 请先输入' + (type === 'phone' ? '手机号' : '邮箱'));
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('contact', contact);
+    formData.append('code_type', 'register');
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ 发送中...</span>';
+    
+    try {
+        const response = await fetch('{{ url_for("auth.send_verification_code") }}', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ ' + data.message);
+        } else {
+            alert('❌ ' + data.message);
+        }
+    } catch (error) {
+        alert('❌ 发送失败，请稍后重试');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>' + (type === 'phone' ? '📲' : '📧') + ' 发送验证码</span>';
+    }
+}
+
+// 页面加载时设置正确的标签
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneValue = document.getElementById('phone').value;
+    const emailValue = document.getElementById('email').value;
+    const contactType = '{{ contact_type|default("phone") }}';
+    
+    if (contactType === 'email' || (!phoneValue && emailValue)) {
+        switchTab('email');
+    } else {
+        switchTab('phone');
+    }
+});
+</script>
+{% endblock %}

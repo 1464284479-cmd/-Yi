@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - 垃圾图片分类系统{% endblock %}
+
+{% block content %}
+<div class="container wide">
+    <div class="logo-emoji">🗑️</div>
+    <h1>垃圾图片分类系统</h1>
+    <p class="subtitle">让垃圾分类变得简单有趣！</p>
+    
+    <div style="text-align: center; padding: 30px 0;">
+        <p style="color: #666; font-size: 16px; line-height: 1.8; margin-bottom: 30px;">
+            🎯 智能识别 · 📱 随时随地 · ♻️ 保护环境
+        </p>
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        <a href="{{ url_for('auth.login') }}" style="text-decoration: none;">
+            <button>
+                <span>👋 用户登录</span>
+            </button>
+        </a>
+        
+        <a href="{{ url_for('auth.register') }}" style="text-decoration: none;">
+            <button style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">
+                <span>✨ 用户注册</span>
+            </button>
+        </a>
+        
+        <a href="{{ url_for('auth.admin_login') }}" style="text-decoration: none;">
+            <button class="btn-secondary">
+                <span>🛡️ 管理员登录</span>
+            </button>
+        </a>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; border: 2px solid #e8e8e8;">
+        <h2 style="font-size: 18px; margin-bottom: 15px; justify-content: center;">
+            <span>🌟</span> 系统功能
+        </h2>
+        <ul class="feature-list">
+            <li>📸 智能图片识别，一秒分类</li>
+            <li>📚 完整垃圾分类知识库</li>
+            <li>🔒 安全可靠的用户管理</li>
+            <li>📊 详细的数据统计分析</li>
+            <li>🎨 简洁美观的界面设计</li>
+        </ul>
+    </div>
+    
+    <div style="margin-top: 30px; text-align: center;">
+        <p style="color: #999; font-size: 14px;">
+            🌍 共同守护美好家园，从垃圾分类开始
+        </p>
+    </div>
+</div>
+
+<style>
+    button span {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+{% endblock %}
