@@ -1,6 +1,9 @@
 from flask import Flask
 from config import Config
 from app.models import db
+from flask_mail import Mail
+
+mail = Mail()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -8,6 +11,9 @@ def create_app(config_class=Config):
     
     # 初始化数据库
     db.init_app(app)
+    
+    # 初始化邮箱服务
+    mail.init_app(app)
     
     # 创建所有表
     with app.app_context():

@@ -7,3 +7,11 @@ class Config:
     MAX_LOGIN_ATTEMPTS = 5
     LOCKOUT_TIME_MINUTES = 10
     PASSWORD_MIN_LENGTH = 8
+    
+    # 邮箱服务配置
+    MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.qq.com'
+    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') or True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'your-email@qq.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'your-email-password'
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or 'your-email@qq.com'

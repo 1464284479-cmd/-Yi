@@ -3,6 +3,7 @@ from email_validator import validate_email, EmailNotValidError
 from datetime import datetime
 import re
 from app.models import db, User, VerificationCode
+from app.utils import send_email
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -147,14 +148,26 @@ def send_verification_code():
     # 生成验证码
     code = VerificationCode.generate_code(contact, code_type)
     
-    # TODO: 实际发送验证码（短信或邮件）
-    # 这里仅用于演示，打印到控制台
-    print(f"验证码已发送到 {contact}: {code}")
-    
-    return jsonify({
-        'success': True, 
-        'message': f'验证码已发送（演示：{code}）'
-    })
+    # 发送验证码
+    if is_email:
+        success, message = send_email(contact, code)
+        if success:
+            return jsonify({
+                'success': True, 
+                'message': f'验证码已发送到 {contact}'
+            })
+        else:
+            return jsonify({
+                'success': False, 
+                'message': f'发送失败：{message}'
+            })
+    else:
+        # 手机号验证码暂时使用演示模式
+        print(f"验证码已发送到 {contact}: {code}")
+        return jsonify({
+            'success': True, 
+            'message': f'验证码已发送到 {contact}（演示：{code}）'
+        })
 
 # ==================== 路由：F002 用户登录 ====================
 
